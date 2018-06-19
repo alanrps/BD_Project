@@ -180,7 +180,11 @@ public class PontoJDialog extends javax.swing.JFrame {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(btnFechar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+<<<<<<< HEAD
+                .addContainerGap())
+=======
                 .addGap(39, 39, 39))
+>>>>>>> efa7e22bf164b3ad66c54ff72941af8d9e50fe93
         );
 
         pack();
