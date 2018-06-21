@@ -81,11 +81,7 @@
                       <Component id="btnFechar" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
                   </Group>
               </Group>
-<<<<<<< HEAD
               <EmptySpace min="-2" max="-2" attributes="0"/>
-=======
-              <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
->>>>>>> efa7e22bf164b3ad66c54ff72941af8d9e50fe93
           </Group>
       </Group>
     </DimensionLayout>

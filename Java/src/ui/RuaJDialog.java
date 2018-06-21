@@ -5,18 +5,40 @@
  */
 package ui;
 
+import java.sql.SQLException;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableCellRenderer;
+import model.Rua;
+import dao.RuaDAO;
+
 /**
  *
- * @author a1923161
+ * @author lucas
  */
-public class RuaJDialog extends javax.swing.JFrame {
+public class RuaJDialog extends javax.swing.JDialog {
 
     /**
-     * Creates new form RUa
+     * Creates new form RuaJDialog2
+     * @param parent
+     * @param modal
      */
-    public RuaJDialog() {
+    public RuaJDialog(java.awt.Frame parent, boolean modal) {
+        super(parent, modal);
         initComponents();
-    }
+        try {
+            loadRecords();
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }                                  
+
+    /**
+     * @param args the command line arguments
+     */
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -27,12 +49,8 @@ public class RuaJDialog extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
         jScrollPane4 = new javax.swing.JScrollPane();
-        jTable4 = new javax.swing.JTable();
+        jTableRua = new javax.swing.JTable();
         btnCancelar = new javax.swing.JButton();
         btnFechar = new javax.swing.JButton();
         btnNovo = new javax.swing.JButton();
@@ -43,35 +61,9 @@ public class RuaJDialog extends javax.swing.JFrame {
         txtNome = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane1.setViewportView(jTable1);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane2.setViewportView(jTable2);
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jTable4.setModel(new javax.swing.table.DefaultTableModel(
+        jTableRua.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null},
                 {null, null},
@@ -90,7 +82,9 @@ public class RuaJDialog extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
-        jScrollPane4.setViewportView(jTable4);
+        jTableRua.setColumnSelectionAllowed(true);
+        jScrollPane4.setViewportView(jTableRua);
+        jTableRua.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 
         btnCancelar.setText("Cancelar");
         btnCancelar.setActionCommand("btnImprimir");
@@ -164,7 +158,7 @@ public class RuaJDialog extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane4)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -189,8 +183,8 @@ public class RuaJDialog extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -208,14 +202,16 @@ public class RuaJDialog extends javax.swing.JFrame {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(btnFechar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-
+        clearInputBoxes();
+        enableButtons(true, false, false, false);
+        txtNome.setEnabled(false);
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFecharActionPerformed
@@ -223,15 +219,46 @@ public class RuaJDialog extends javax.swing.JFrame {
     }//GEN-LAST:event_btnFecharActionPerformed
 
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
-
+        addRecord = true;
+        clearInputBoxes();
+        enableButtons(false, true, true, false);
+        txtNome.setEnabled(true);
     }//GEN-LAST:event_btnNovoActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+        int dialogResult = JOptionPane.showConfirmDialog(null, "Você tem certeza que deseja salvar esse registro?", "Confirmação?", JOptionPane.YES_NO_OPTION);
 
+        if (dialogResult == JOptionPane.YES_OPTION) {
+            try {
+                if (addRecord == true) {
+                    addNew();
+                } else {
+                    updateRecord();
+                }
+                addRecord = false;
+                loadRecords();
+                enableButtons(true, false, false, false);
+                txtNome.setEnabled(false);
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void btnRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverActionPerformed
+        int dialogResult = JOptionPane.showConfirmDialog(null, "Você tem certeza que deseja excluir esse registro?", "Confirmação?", JOptionPane.YES_NO_OPTION);
 
+        if (dialogResult == JOptionPane.YES_OPTION) {
+            try {
+                deleteRecord();
+                loadRecords();
+                clearInputBoxes();
+                enableButtons(true, false, false, false);
+                txtNome.setEnabled(false);
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
     }//GEN-LAST:event_btnRemoverActionPerformed
 
     private void txtNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNomeActionPerformed
@@ -241,41 +268,75 @@ public class RuaJDialog extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(RuaJDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(RuaJDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(RuaJDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(RuaJDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new RuaJDialog().setVisible(true);
-            }
-        });
+    boolean addRecord = false;
+ 
+    private void clearInputBoxes() {
+        txtID.setText("");
+        txtNome.setText("");
+    }
+    
+    private void addNew() throws SQLException {
+        Rua r = new Rua();
+        r.setNome(txtNome.getText());
+        RuaDAO dao = new RuaDAO();
+        dao.insert(r);
+    }
+    
+    private void updateRecord() throws SQLException {
+        Rua r = new Rua();
+        r.setId(Integer.parseInt(txtID.getText()));
+        r.setNome(txtNome.getText());
+        RuaDAO dao = new RuaDAO();
+        dao.update(r);
     }
 
+    private void deleteRecord() throws SQLException {
+        RuaDAO dao = new RuaDAO();
+        dao.remove(Integer.parseInt(txtID.getText()));
+    }
+    
+    private void loadRecords() throws SQLException {
+        String sql = "SELECT id as ID, nome as Nome FROM RUA;";
+        ResultSetTableModel tableModel = new ResultSetTableModel(sql);
+        jTableRua.setModel(tableModel);
+        
+        //Hiding column "id" 
+        jTableRua.removeColumn(jTableRua.getColumnModel().getColumn(0));
+        
+        //Adjusting columns 
+        jTableRua.getColumnModel().getColumn(1).setMaxWidth(50); //"nome"
+       
+        jTableRua.getSelectionModel().addListSelectionListener((ListSelectionEvent event) -> {
+            try {
+                if (jTableRua.getSelectedRow() >= 0) {
+                    
+                    Object id = jTableRua.getModel().getValueAt(jTableRua.getSelectedRow(), 0);
+                    Object nome = jTableRua.getModel().getValueAt(jTableRua.getSelectedRow(), 1);
+                    
+                    txtID.setText(id.toString());
+                    txtNome.setText(nome.toString());
+                    
+                    enableButtons(false, true, true, true);
+                    txtNome.setEnabled(true);
+                }
+            } catch (Exception ex) {
+                System.out.println(ex.getMessage());
+            }
+        });
+
+        DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
+        rightRenderer.setHorizontalAlignment(SwingConstants.LEFT);
+        jTableRua.getColumnModel().getColumn(0).setCellRenderer(rightRenderer);
+    }
+    
+     public void enableButtons(boolean novo, boolean salvar, boolean cancelar, boolean remover){
+        btnNovo.setEnabled(novo);
+        btnSalvar.setEnabled(salvar);
+        btnCancelar.setEnabled(cancelar);
+        btnRemover.setEnabled(remover);
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnFechar;
@@ -284,12 +345,8 @@ public class RuaJDialog extends javax.swing.JFrame {
     private javax.swing.JButton btnSalvar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
-    private javax.swing.JTable jTable4;
+    private javax.swing.JTable jTableRua;
     private javax.swing.JTextField txtID;
     private javax.swing.JTextField txtNome;
     // End of variables declaration//GEN-END:variables
