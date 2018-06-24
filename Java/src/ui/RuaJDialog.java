@@ -309,7 +309,7 @@ public class RuaJDialog extends javax.swing.JDialog {
         
         
         //Adjusting columns***
-        jTableRua.getColumnModel().getColumn(1).setMaxWidth(50);
+        jTableRua.getColumnModel().getColumn(0).setMaxWidth(50);
        
         jTableRua.getSelectionModel().addListSelectionListener((ListSelectionEvent event) -> {
             try {

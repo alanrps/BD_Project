@@ -46,7 +46,7 @@ public class RuaDAO extends DBConnection{
             con = connect();
             ps = con.prepareStatement(sqlUpdate);
             ps.setString(1, rua.getNome());
-            ps.setInt(0, rua.getId());
+            ps.setInt(2, rua.getId());
             ps.execute();
         }
         finally{
@@ -60,7 +60,7 @@ public class RuaDAO extends DBConnection{
         try{
             con = connect();
             ps = con.prepareStatement(sqlRemove);
-            ps.setInt(0, id);
+            ps.setInt(1, id);
             ps.execute();
         }
         finally{
