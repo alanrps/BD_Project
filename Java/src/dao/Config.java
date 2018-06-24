@@ -10,7 +10,7 @@ package dao;
  * @author lucas
  */
 public class Config {
-    public static final String URL = "jdbc:mysql://localhost3306/TRANSPORTE";
+    public static final String URL = "jdbc:mysql://localhost:3306/TRANSPORTE?useSSL=false";
     public static final String LOGIN = "root";
-    public static final String PASSWORD = "root"; 
+    public static final String PASSWORD = "alan241198"; 
 }

@@ -14,6 +14,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import model.Rua;
 import dao.RuaDAO;
+import javax.swing.table.TableColumn;
 
 /**
  *
@@ -304,8 +305,11 @@ public class RuaJDialog extends javax.swing.JDialog {
         //Hiding column "id" 
         jTableRua.removeColumn(jTableRua.getColumnModel().getColumn(0));
         
-        //Adjusting columns 
-        jTableRua.getColumnModel().getColumn(1).setMaxWidth(50); //"nome"
+       
+        
+        
+        //Adjusting columns***
+        jTableRua.getColumnModel().getColumn(1).setMaxWidth(50);
        
         jTableRua.getSelectionModel().addListSelectionListener((ListSelectionEvent event) -> {
             try {

@@ -19,7 +19,7 @@ import java.util.ArrayList;
  */
 public class RuaDAO extends DBConnection{
     private Connection con;
-    private final String sqlInsert = "INSERT INTO RUA(id, nome) VALUES (?,?)";
+    private final String sqlInsert = "INSERT INTO RUA(nome) VALUES (?)";
     private final String sqlUpdate = "UPDATE RUA SET nome= ?  WHERE id = ? ";
     private final String sqlRemove = "DELETE FROM RUA WHERE id = ?";
     private final String sqlList   = "SELECT id, nome FROM RUA ORDER BY nome";
